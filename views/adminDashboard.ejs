@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/styles.css"> 
+</head>
+<body>
+    <h1 class="mt-4">Admin Dashboard</h1>
+    <p class="lead mb-3">Welcome <%= user.name %> (Admin)</p>
+    <a href="/auth/logout" class="btn btn-secondary">Logout</a>
+
+    <h2 class="mt-4">Active Sessions</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Session ID</th>
+                <th>User ID</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% Object.keys(sessions).forEach(function(sessionId) { %>
+                <% const session = sessions[sessionId]; %>
+                <tr>
+                    <td><%= sessionId %></td>
+                    <td><%= session?.passport?.user %></td>
+                    <td>
+                        <form action="/admin/revoke" method="POST" style="display:inline;">
+                            <input type="hidden" name="sessionId" value="<%= sessionId %>">
+                            <button type="submit" class="btn btn-danger">Revoke Session</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>
